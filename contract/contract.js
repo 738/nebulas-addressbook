@@ -71,7 +71,18 @@ class AddressBookManager {
     }
 
     delete(address) {
-
+        if (address === '') throw new Error("Argument Invalid: empty address");
+        var userAddress = Blockchain.transaction.from;
+        var user = this.user.get(userAddress);
+        if (user === undefined) throw new Error("Error: There is no content");
+        for (var i = 0; i < user.addressItems.length; i++) {
+            if (user.addressItems[i].address === address) {
+                user.addressItems.splice(i, 1);
+                this.user.set(userAddress, user);
+                return user;
+            }
+        }
+        throw new Error("ERROR: There is no address");
     }
 
     addFavorite(address) {
