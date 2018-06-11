@@ -1,3 +1,8 @@
+var Stubs = require("./contractStubs");
+let LocalContractStorage = Stubs.LocalContractStorage;
+let Blockchain = Stubs.Blockchain;
+let TestMap = Stubs.TestMap;
+
 class User {
     constructor(str) {
         let obj = str ? JSON.parse(str) : {};
@@ -24,7 +29,14 @@ class AddressItem {
 
 class AddressBookManager {
     constructor() {
-
+        LocalContractStorage.defineMapProperty(this, "user", {
+            parse: function (str) {
+                return new User(str);
+            },
+            stringify: function (obj) {
+                return obj.toString();
+            }
+        });
     }
 
     init() {
@@ -32,11 +44,18 @@ class AddressBookManager {
     }
 
     save(address, name) {
-
+        if (address === '') throw new Error("Argument Invalid: empty address");
+        if (name === '') throw new Error("Argument Invalid: empty name");
+        var userAddress = Blockchain.transaction.from;
+        var user = this.user.get(userAddress) || new User();
+        user.userAddress = userAddress;
+        user.addressItems.push({address, name});
+        this.user.set(userAddress, user);
+        return user;
     }
 
     edit(address, newName) {
-
+        
     }
 
     delete(address) {
