@@ -20,6 +20,7 @@ class AddressItem {
         let obj = str ? JSON.parse(str) : {};
         this.address = obj.address || '';
         this.name = obj.name || '';
+        this.isFavorite = obj.isFavorite || false;
     }
 
     toString() {
@@ -49,8 +50,14 @@ class AddressBookManager {
         var userAddress = Blockchain.transaction.from;
         var user = this.user.get(userAddress) || new User();
         user.userAddress = userAddress;
-        user.addressItems.push({address, name});
+        user.addressItems.push({address, name, isFavorite: false});
         this.user.set(userAddress, user);
+        return user;
+    }
+
+    get() {
+        var userAddress = Blockchain.transaction.from;
+        var user = this.user.get(userAddress);
         return user;
     }
 
@@ -85,8 +92,19 @@ class AddressBookManager {
         throw new Error("ERROR: There is no address");
     }
 
-    addFavorite(address) {
-
+    addOrRemoveFavorite(address) {
+        if (address === '') throw new Error("Argument Invalid: empty address");
+        var userAddress = Blockchain.transaction.from;
+        var user = this.user.get(userAddress);
+        if (user === undefined) throw new Error("Error: There is no content");
+        for (var item of user.addressItems) {
+            if (item.address === address) {
+                item.isFavorite = !item.isFavorite;
+                this.user.set(userAddress, user);
+                return user;
+            }
+        }
+        throw new Error("ERROR: There is no address");
     }
 
 }
