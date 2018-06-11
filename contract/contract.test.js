@@ -12,3 +12,5 @@ contract.init();
 contract.save('n1xxx', 'Jon Jee');
 contract.save('n1xxy', 'Yoon Jee');
 console.log(contract.save('n1123', 'JJJ'));
+console.log(contract.edit('n1xxx', 'Jon Kim'));
+console.log(contract.edit('n1xxx1', 'Jon Kim'));
