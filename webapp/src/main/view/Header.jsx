@@ -9,7 +9,7 @@ const Menu = (props) => (
     <IconMenu
         {...props}
         iconButtonElement={
-            <IconButton><MoreVertIcon /></IconButton>
+            <IconButton iconStyle={{color: 'white'}}><MoreVertIcon /></IconButton>
         }
         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -22,8 +22,9 @@ const Menu = (props) => (
 const Header = () => (
     <AppBar
         title="Nebulas Address Book"
-        titleStyle={{textAlign: "center", fontFamily: 'Permanent Marker, cursive'}}
-        iconElementLeft={<div/>}
+        titleStyle={{ textAlign: "center", fontFamily: 'Permanent Marker, cursive' }}
+        style={{backgroundColor: "#4b7bec"}}
+        iconElementLeft={<div />}
         iconElementRight={<Menu />}
     />
 );

@@ -10,7 +10,7 @@ class AddressItem extends React.Component {
                 margin: "15px"
             },
             button: {
-                width: "50px"
+                minWidth: "60px",
             }
         }
         return (
@@ -22,10 +22,10 @@ class AddressItem extends React.Component {
                         showExpandableButton={false}
                     />
                     <CardActions>
-                        <RaisedButton style={styles.button} label="송금" primary={true}/>
-                        <RaisedButton label="QR" primary={true}/>
-                        <RaisedButton label="편집" secondary={true}/>
-                        <RaisedButton label="삭제" secondary={true}/>
+                        <RaisedButton style={styles.button} label="송금" backgroundColor="#00cec9"/>
+                        <RaisedButton style={styles.button} label="QR코드" backgroundColor="#74b9ff"/>
+                        <RaisedButton style={styles.button} label="편집" backgroundColor="#a29bfe"/>
+                        <RaisedButton style={styles.button} label="삭제" backgroundColor="#fab1a0"/>
                     </CardActions>
                 </Card>
             </div>
