@@ -27,6 +27,11 @@ class MainView extends React.Component {
                 name: "안철수",
                 address: "n1XXXxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
                 isFavorite: false,
+            },
+            {
+                name: "지윤우",
+                address: "n1XXYxpx123mDiFCimh2cCSg1B3sbAShAeA",
+                isFavorite: false,
             }],
             autoComplete: [],
         }
@@ -57,6 +62,7 @@ class MainView extends React.Component {
         }
         return (
             <div>
+                <canvas id="qrcode" style={{display: "none"}}></canvas>
                 <AutoComplete
                     style={styles.autoComplete}
                     hintText="Search Name"

@@ -1,9 +1,48 @@
 import React from 'react';
+import QRious from 'qrious';
 import { Card, CardHeader, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Identicon from 'identicon.js';
+import QRCodeDialog from './QRCodeDialog';
 
 class AddressItem extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpenQRCodeModal: false,
+            qrcode: '',
+        }
+    }
+
+    onQRCodeModalOpen() {
+        this.setState({
+            ...this.state,
+            isOpenQRCodeModal: true,
+        }, this.onQRCodeGenerated.bind(this));
+    }
+
+    onQRCodeModalClosed() {
+        this.setState({
+            ...this.state,
+            isOpenQRCodeModal: false,
+        });
+    }
+
+    onQRCodeGenerated() {
+        console.log(document.getElementById('qrcode'));
+
+        var qr = new QRious({
+            element: document.getElementById('qrcode'),
+            value: this.props.item.address,
+        });
+
+        this.setState({
+            ...this.state,
+            qrcode: qr.toDataURL(),
+        });
+    }
+
     render() {
         const styles = {
             card: {
@@ -14,9 +53,10 @@ class AddressItem extends React.Component {
             }
         }
         const identiconOptions = {
-            background: [255, 255, 255, 255],         // rgba white
-            margin: 0.2,                              // 20% margin
-            size: 420,                                // 420px square
+            foreground: [56, 103, 214, 255],
+            background: [255, 255, 255, 255],
+            margin: 0.2,
+            size: 420,
         };
         return (
             <div>
@@ -29,11 +69,12 @@ class AddressItem extends React.Component {
                     />
                     <CardActions>
                         <RaisedButton style={styles.button} label="송금" backgroundColor="#00cec9" />
-                        <RaisedButton style={styles.button} label="QR코드" backgroundColor="#74b9ff" />
+                        <RaisedButton style={styles.button} label="QR코드" backgroundColor="#74b9ff" onClick={this.onQRCodeModalOpen.bind(this)} />
                         <RaisedButton style={styles.button} label="편집" backgroundColor="#a29bfe" />
                         <RaisedButton style={styles.button} label="삭제" backgroundColor="#fab1a0" />
                     </CardActions>
                 </Card>
+                <QRCodeDialog isOpenModal={this.state.isOpenQRCodeModal} closeListener={this.onQRCodeModalClosed.bind(this)} qrcode={this.state.qrcode} />
             </div>
         );
     }
