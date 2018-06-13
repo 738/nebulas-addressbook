@@ -7,28 +7,36 @@ class MainView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchInput: '',
             addressItems: [{
                 name: "지준우",
-                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
+                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeB",
                 isFavorite: false,
             },
             {
                 name: "신중협",
-                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
+                address: "n1aaPt9QzH9uTZ6FPfg2SENLapFdwmutmtC",
                 isFavorite: false,
             },
             {
                 name: "박보선",
-                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
+                address: "n1Ry1HRT39EtXtk6XHSzUUhNe5k8Q9zmix1",
                 isFavorite: false,
             },
             {
-                name: "황규진",
-                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
+                name: "안철수",
+                address: "n1XXXxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
                 isFavorite: false,
             }],
             autoComplete: [],
         }
+    }
+
+    onSearchInputChanged(e) {
+        this.setState({
+            ...this.state,
+            searchInput: e.target.value,
+        })
     }
 
     handleUpdateInput(value) {
@@ -54,8 +62,14 @@ class MainView extends React.Component {
                     hintText="Search Name"
                     dataSource={this.state.autoComplete}
                     onUpdateInput={this.handleUpdateInput.bind(this)}
+                    value={this.state.searchInput}
+                    onChange={this.onSearchInputChanged.bind(this)}
                 />
-                {this.state.addressItems.map((addressItem, index) => <AddressItem item={addressItem} key={index}></AddressItem>)}
+                {this.state.addressItems &&
+                    this.state.addressItems
+                    .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
+                    .map((addressItem, index) => <AddressItem item={addressItem} key={index}></AddressItem>)
+                }
             </div>
         );
     }
