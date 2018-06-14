@@ -1,9 +1,11 @@
 import React from 'react';
 import QRious from 'qrious';
+import Blockies from 'react-blockies';
+import QRCodeDialog from './QRCodeDialog';
+
+// material-ui
 import { Card, CardHeader, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import Identicon from 'identicon.js';
-import QRCodeDialog from './QRCodeDialog';
 
 class AddressItem extends React.Component {
 
@@ -48,21 +50,19 @@ class AddressItem extends React.Component {
                 minWidth: "60px",
             }
         }
-        const identiconOptions = {
-            foreground: [56, 103, 214, 255],
-            background: [255, 255, 255, 255],
-            margin: 0.2,
-            size: 420,
-        };
         return (
             <div>
                 <Card style={styles.card}>
                     <CardHeader
-                        avatar={`data:image/png;base64,${new Identicon(this.props.item.address, identiconOptions).toString()}`}
+                        avatar={<Blockies
+                            seed={this.props.item.address}
+                            size={11}
+                            scale={3}
+                        />}
                         title={this.props.item.name}
                         subtitle={this.props.item.address}
-                        titleStyle={{fontSize: '20px'}}
-                        subtitleStyle={{fontSize: '10px'}}
+                        titleStyle={{fontSize: '20px', marginLeft: '10px'}}
+                        subtitleStyle={{fontSize: '10px', marginLeft: '10px'}}
                         showExpandableButton={false}
                     />
                     <CardActions>
