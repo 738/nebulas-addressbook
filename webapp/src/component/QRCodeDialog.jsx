@@ -19,13 +19,14 @@ class QRCodeDialog extends React.Component {
         ];
         return (
             <Dialog
-                title="QR코드"
+                title={`${this.props.item.name}님의 QR코드`}
                 actions={actions}
                 modal={false}
                 open={this.props.isOpenModal}
                 onRequestClose={this.props.closeListener}
                 bodyStyle={{ textAlign: 'center' }}
-                style={{ maxWidth: '300px' }}>
+                contentStyle={{ maxWidth: '300px' }}>
+                <span style={{ fontSize: '12px'}}>{this.props.item.address}</span>
                 <img src={this.props.qrcode} />
             </Dialog>
         );

@@ -62,7 +62,6 @@ class MainView extends React.Component {
         }
         return (
             <div>
-                <canvas id="qrcode" style={{display: "none"}}></canvas>
                 <AutoComplete
                     style={styles.autoComplete}
                     hintText="Search Name"

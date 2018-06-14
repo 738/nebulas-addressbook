@@ -30,13 +30,9 @@ class AddressItem extends React.Component {
     }
 
     onQRCodeGenerated() {
-        console.log(document.getElementById('qrcode'));
-
         var qr = new QRious({
-            element: document.getElementById('qrcode'),
             value: this.props.item.address,
         });
-
         this.setState({
             ...this.state,
             qrcode: qr.toDataURL(),
@@ -65,6 +61,8 @@ class AddressItem extends React.Component {
                         avatar={`data:image/png;base64,${new Identicon(this.props.item.address, identiconOptions).toString()}`}
                         title={this.props.item.name}
                         subtitle={this.props.item.address}
+                        titleStyle={{fontSize: '20px'}}
+                        subtitleStyle={{fontSize: '10px'}}
                         showExpandableButton={false}
                     />
                     <CardActions>
@@ -74,7 +72,7 @@ class AddressItem extends React.Component {
                         <RaisedButton style={styles.button} label="삭제" backgroundColor="#fab1a0" />
                     </CardActions>
                 </Card>
-                <QRCodeDialog isOpenModal={this.state.isOpenQRCodeModal} closeListener={this.onQRCodeModalClosed.bind(this)} qrcode={this.state.qrcode} />
+                <QRCodeDialog isOpenModal={this.state.isOpenQRCodeModal} closeListener={this.onQRCodeModalClosed.bind(this)} qrcode={this.state.qrcode} item={this.props.item} />
             </div>
         );
     }
