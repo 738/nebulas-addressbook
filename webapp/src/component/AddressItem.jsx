@@ -6,6 +6,9 @@ import QRCodeDialog from './QRCodeDialog';
 // material-ui
 import { Card, CardHeader, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 class AddressItem extends React.Component {
 
@@ -48,6 +51,12 @@ class AddressItem extends React.Component {
             },
             button: {
                 minWidth: "60px",
+            },
+            favoriteCheckBox: {
+                display: 'inline-block',
+                width: '24px',
+                position: 'absolute',
+                right: '20px'
             }
         }
         return (
@@ -59,10 +68,18 @@ class AddressItem extends React.Component {
                             size={11}
                             scale={3}
                         />}
-                        title={this.props.item.name}
+                        title={<div>
+                            <span>{this.props.item.name}</span>
+                            <Checkbox
+                                checkedIcon={<ActionFavorite />}
+                                uncheckedIcon={<ActionFavoriteBorder />}
+                                style={styles.favoriteCheckBox}
+                                checked={this.props.item.isFavorite}
+                            />
+                        </div>}
                         subtitle={this.props.item.address}
-                        titleStyle={{fontSize: '20px', marginLeft: '10px'}}
-                        subtitleStyle={{fontSize: '10px', marginLeft: '10px'}}
+                        titleStyle={{ fontSize: '20px', marginLeft: '10px' }}
+                        subtitleStyle={{ fontSize: '10px', marginLeft: '10px' }}
                         showExpandableButton={false}
                     />
                     <CardActions>

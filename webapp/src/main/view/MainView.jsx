@@ -11,7 +11,7 @@ class MainView extends React.Component {
             addressItems: [{
                 name: "지준우",
                 address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeB",
-                isFavorite: false,
+                isFavorite: true,
             },
             {
                 name: "신중협",
