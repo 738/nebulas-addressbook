@@ -1,6 +1,7 @@
 import React from 'react';
 import AddressItem from '../../component/AddressItem';
 import AutoComplete from 'material-ui/AutoComplete';
+import ContractDataController from '../../main/datacontroller/ContractDataController';
 
 class MainView extends React.Component {
 
@@ -8,33 +9,13 @@ class MainView extends React.Component {
         super(props);
         this.state = {
             searchInput: '',
-            addressItems: [{
-                name: "지준우",
-                address: "n1YDQxpxSf7mDiFCimh2cCSg1B3sbAShAeB",
-                isFavorite: false,
-            },
-            {
-                name: "신중협",
-                address: "n1aaPt9QzH9uTZ6FPfg2SENLapFdwmutmtC",
-                isFavorite: false,
-            },
-            {
-                name: "박보선",
-                address: "n1Ry1HRT39EtXtk6XHSzUUhNe5k8Q9zmix1",
-                isFavorite: false,
-            },
-            {
-                name: "안철수",
-                address: "n1XXXxpxSf7mDiFCimh2cCSg1B3sbAShAeA",
-                isFavorite: false,
-            },
-            {
-                name: "지윤우",
-                address: "n1XXYxpx123mDiFCimh2cCSg1B3sbAShAeA",
-                isFavorite: false,
-            }],
+            addressItems: [],
             autoComplete: [],
         }
+    }
+
+    componentDidMount() {
+        this.fetchAddressItems();
     }
 
     onSearchInputChanged(e) {
@@ -52,6 +33,18 @@ class MainView extends React.Component {
             ],
         });
     };
+
+    fetchAddressItems() {
+        ContractDataController.callSmartContract("get", "", this.updateAddressItems.bind(this));
+    }
+
+    updateAddressItems(tx) {
+        this.setState({
+            ...this.state,
+            addressItems: JSON.parse(tx.result).addressItems,
+            // isLoading: false,
+        });
+    }
 
 
     render() {
