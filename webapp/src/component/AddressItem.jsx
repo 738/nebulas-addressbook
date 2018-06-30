@@ -3,6 +3,7 @@ import QRious from 'qrious';
 import Blockies from 'react-blockies';
 import QRCodeDialog from './QRCodeDialog';
 import SendDialog from './SendDialog';
+import EditNameDialog from './EditNameDialog';
 import ContractDataController from '../main/datacontroller/ContractDataController';
 
 // material-ui
@@ -19,6 +20,7 @@ class AddressItem extends React.Component {
         this.state = {
             isOpenQRCodeModal: false,
             isOpenSendModal: false,
+            isOpenEditNameModal: false,
             qrcode: '',
         }
     }
@@ -48,6 +50,20 @@ class AddressItem extends React.Component {
         this.setState({
             ...this.state,
             isOpenSendModal: false,
+        });
+    }
+
+    onEditNameModalOpen() {
+        this.setState({
+            ...this.state,
+            isOpenEditNameModal: true,
+        });
+    }
+
+    onEditNameModalClosed() {
+        this.setState({
+            ...this.state,
+            isOpenEditNameModal: false,
         });
     }
 
@@ -113,12 +129,13 @@ class AddressItem extends React.Component {
                     <CardActions>
                         {this.props.myself || <RaisedButton style={styles.button} label="Send" backgroundColor="#00cec9" onClick={this.onSendModalOpen.bind(this)}/>}
                         <RaisedButton style={styles.button} label="QR Code" backgroundColor="#74b9ff" onClick={this.onQRCodeModalOpen.bind(this)} />
-                        {this.props.myself || <RaisedButton label="Edit" style={styles.button} backgroundColor="#a29bfe" />}
+                        {this.props.myself || <RaisedButton label="Edit" style={styles.button} backgroundColor="#a29bfe" onClick={this.onEditNameModalOpen.bind(this)}/>}
                         {this.props.myself || <RaisedButton label="Delete" style={styles.button} backgroundColor="#fab1a0" onClick={this.onDeleteButtonClicked.bind(this)} />}
                     </CardActions>
                 </Card>
                 <QRCodeDialog isOpenModal={this.state.isOpenQRCodeModal} closeListener={this.onQRCodeModalClosed.bind(this)} qrcode={this.state.qrcode} item={this.props.item} />
                 <SendDialog isOpenModal={this.state.isOpenSendModal} closeListener={this.onSendModalClosed.bind(this)} name={this.props.item.name} address={this.props.item.address} />
+                <EditNameDialog isOpenModal={this.state.isOpenEditNameModal} closeListener={this.onEditNameModalClosed.bind(this)} name={this.props.item.name} address={this.props.item.address} succeedListener={this.props.succeedListener}/>
             </div>
         );
     }

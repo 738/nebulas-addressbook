@@ -6,32 +6,33 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 
-class SendDialog extends React.Component {
+class EditNameDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: '',
+            newName: '',
         }
     }
 
-    onSendButtonClicked() {
+    onEditButtonClicked() {
         if (this.state.amount === '') {
-            alert('Fill The Amount');
+            alert('Fill The Name');
             return;
         }
-        ContractDataController.transfer(this.props.address, this.state.amount);
+        var args = `[\"${this.props.address}\", \"${this.state.newName}\"]`;
+        ContractDataController.sendTransaction('0', 'edit', args, undefined, this.props.succeedListener, undefined);
         this.setState({
             ...this.state,
-            amount: '',
+            newName: '',
         }, () => {
             this.props.closeListener();
         });
     }
 
-    onAmountChanged(e) {
+    onNewNameChanged(e) {
         this.setState({
             ...this.state,
-            amount: e.target.value,
+            newName: e.target.value,
         });
     }
 
@@ -52,15 +53,15 @@ class SendDialog extends React.Component {
                 onClick={this.props.closeListener}
             />,
             <FlatButton
-                label={'Send'}
+                label={'Edit'}
                 primary={true}
-                onClick={this.onSendButtonClicked.bind(this)}
+                onClick={this.onEditButtonClicked.bind(this)}
             />,
         ];
         return (
             <div>
                 <Dialog
-                    title={`Send NAS to ${this.props.name}`}
+                    title={`Edit Name`}
                     actions={actions}
                     modal={false}
                     open={this.props.isOpenModal}
@@ -68,11 +69,11 @@ class SendDialog extends React.Component {
                     contentStyle={styles.customContentStyle}
                     bodyStyle={styles.customBodyStyle}>
                     <TextField
-                        hintText={'Amount'}
-                        floatingLabelText={'Amount'}
+                        hintText={this.props.name}
+                        floatingLabelText={'Edit Name'}
                         value={this.state.amount}
                         maxLength='35'
-                        onChange={this.onAmountChanged.bind(this)}
+                        onChange={this.onNewNameChanged.bind(this)}
                     />
                 </Dialog>
             </div>
@@ -80,4 +81,4 @@ class SendDialog extends React.Component {
     }
 }
 
-export default SendDialog;
+export default EditNameDialog;
