@@ -97,6 +97,7 @@ class MainView extends React.Component {
                 {this.state.addressItems &&
                     this.state.addressItems
                         .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
+                        .sort((a, b) => b.isFavorite - a.isFavorite)
                         .map((addressItem, index) => <AddressItem item={addressItem} key={index} succeedListener={this.onTransactionSucceed.bind(this)}></AddressItem>)
                 }
                 <FloatingActionButton style={styles.floatingActionButton} onClick={this.onAddModalOpen.bind(this)}>
