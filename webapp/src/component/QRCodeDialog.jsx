@@ -27,6 +27,7 @@ class QRCodeDialog extends React.Component {
                 bodyStyle={{ textAlign: 'center' }}
                 contentStyle={{ maxWidth: '300px' }}>
                 <span style={{ fontSize: '12px'}}>{this.props.item.address}</span>
+                <br />
                 <img src={this.props.qrcode} />
             </Dialog>
         );

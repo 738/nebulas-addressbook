@@ -1,7 +1,12 @@
 import React from 'react';
 import AddressItem from '../../component/AddressItem';
-import AutoComplete from 'material-ui/AutoComplete';
 import ContractDataController from '../../main/datacontroller/ContractDataController';
+import AddAddressDialog from '../../component/AddAddressDialog';
+
+// material-ui
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import AutoComplete from 'material-ui/AutoComplete';
 
 class MainView extends React.Component {
 
@@ -11,6 +16,7 @@ class MainView extends React.Component {
             searchInput: '',
             addressItems: [],
             autoComplete: [],
+            isOpenAddModal: false,
         }
     }
 
@@ -46,15 +52,33 @@ class MainView extends React.Component {
         });
     }
 
+    onAddModalOpen() {
+        this.setState({
+            ...this.state,
+            isOpenAddModal: true,
+        });
+    }
+
+    onAddModalClosed() {
+        this.setState({
+            ...this.state,
+            isOpenAddModal: false
+        });
+    }
 
     render() {
         const styles = {
             autoComplete: {
                 marginLeft: "20px"
-            }
+            },
+            floatingActionButton: {
+                position: 'fixed',
+                left: '20px',
+                bottom: '20px',
+            },
         }
         return (
-            <div>
+            <div style={{minHeight: "600px"}}>
                 <AutoComplete
                     style={styles.autoComplete}
                     hintText="Search Name"
@@ -65,9 +89,13 @@ class MainView extends React.Component {
                 />
                 {this.state.addressItems &&
                     this.state.addressItems
-                    .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
-                    .map((addressItem, index) => <AddressItem item={addressItem} key={index}></AddressItem>)
+                        .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
+                        .map((addressItem, index) => <AddressItem item={addressItem} key={index}></AddressItem>)
                 }
+                <FloatingActionButton style={styles.floatingActionButton} onClick={this.onAddModalOpen.bind(this)}>
+                    <ContentAdd />
+                </FloatingActionButton>
+                <AddAddressDialog isOpenModal={this.state.isOpenAddModal} closeListener={this.onAddModalClosed.bind(this)} />
             </div>
         );
     }
