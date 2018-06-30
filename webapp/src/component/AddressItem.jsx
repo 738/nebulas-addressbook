@@ -10,8 +10,8 @@ import ContractDataController from '../main/datacontroller/ContractDataControlle
 import { Card, CardHeader, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border'; 
+import ToggleStar from 'material-ui/svg-icons/toggle/star';
+import ToggleStarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 class AddressItem extends React.Component {
 
@@ -114,8 +114,8 @@ class AddressItem extends React.Component {
                         title={<div>
                             <span>{this.props.item.name}</span>
                             {this.props.myself || <Checkbox
-                                checkedIcon={<ActionFavorite />}
-                                uncheckedIcon={<ActionFavoriteBorder />}
+                                checkedIcon={<ToggleStar />}
+                                uncheckedIcon={<ToggleStarBorder />}
                                 style={styles.favoriteCheckBox}
                                 checked={this.props.item.isFavorite}
                                 onCheck={this.onFavoriteChecked.bind(this)}

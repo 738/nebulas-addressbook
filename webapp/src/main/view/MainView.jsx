@@ -32,19 +32,13 @@ class MainView extends React.Component {
         
     }
 
-    onSearchInputChanged(e) {
-        this.setState({
-            ...this.state,
-            searchInput: e.target.value,
-        })
-    }
-
     handleUpdateInput(value) {
         this.setState({
             ...this.state,
-            autoComplete: [
-                ...this.state.addressItems.map(item => item.name).filter(name => name.indexOf(value) >= 0)
-            ],
+            searchInput: value,
+            // autoComplete: [
+            //     ...this.state.addressItems.filter(addressItem => addressItem.name.toLowerCase().replace(/ /g, '').indexOf(this.state.searchInput.toLowerCase().replace(/ /g, '')) >= 0)
+            // ],
         });
     };
 
@@ -99,12 +93,11 @@ class MainView extends React.Component {
                     dataSource={this.state.autoComplete}
                     onUpdateInput={this.handleUpdateInput.bind(this)}
                     value={this.state.searchInput}
-                    onChange={this.onSearchInputChanged.bind(this)}
                 />
                 <AddressItem item={{ address: ContractDataController.userAddress, name: "Myself" }} myself={true}></AddressItem>
                 {this.state.addressItems &&
                     this.state.addressItems
-                        .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
+                        .filter(addressItem => addressItem.name.toLowerCase().replace(/ /g, '').indexOf(this.state.searchInput.toLowerCase().replace(/ /g, '')) >= 0)
                         .sort((a, b) => b.isFavorite - a.isFavorite)
                         .map((addressItem, index) => <AddressItem item={addressItem} key={index} succeedListener={this.onTransactionSucceed.bind(this)}></AddressItem>)
                 }

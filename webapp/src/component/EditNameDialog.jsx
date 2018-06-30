@@ -69,7 +69,6 @@ class EditNameDialog extends React.Component {
                     contentStyle={styles.customContentStyle}
                     bodyStyle={styles.customBodyStyle}>
                     <TextField
-                        hintText={this.props.name}
                         floatingLabelText={'Edit Name'}
                         value={this.state.amount}
                         maxLength='35'
