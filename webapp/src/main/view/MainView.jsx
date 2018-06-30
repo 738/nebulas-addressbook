@@ -21,7 +21,15 @@ class MainView extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchAddressItems();
+        // 바로 하니까 window.webExtensionWallet 값이 undefined로 들어올 때가 있음
+        setTimeout(() => {
+            if (!window.webExtensionWallet) {
+                alert('Install NasExtWallet!');
+                return;
+            }
+            this.fetchAddressItems();
+        }, 100);
+        
     }
 
     onSearchInputChanged(e) {
@@ -84,7 +92,7 @@ class MainView extends React.Component {
             },
         }
         return (
-            <div style={{minHeight: "600px"}}>
+            <div style={{ minHeight: "600px" }}>
                 <AutoComplete
                     style={styles.autoComplete}
                     hintText="Search Name"
@@ -93,7 +101,7 @@ class MainView extends React.Component {
                     value={this.state.searchInput}
                     onChange={this.onSearchInputChanged.bind(this)}
                 />
-                <AddressItem item={{address: ContractDataController.userAddress, name: "Myself"}} myself={true}></AddressItem>
+                <AddressItem item={{ address: ContractDataController.userAddress, name: "Myself" }} myself={true}></AddressItem>
                 {this.state.addressItems &&
                     this.state.addressItems
                         .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
@@ -103,7 +111,7 @@ class MainView extends React.Component {
                 <FloatingActionButton style={styles.floatingActionButton} onClick={this.onAddModalOpen.bind(this)}>
                     <ContentAdd />
                 </FloatingActionButton>
-                <AddAddressDialog isOpenModal={this.state.isOpenAddModal} closeListener={this.onAddModalClosed.bind(this)} succeedListener={this.onTransactionSucceed.bind(this)}/>
+                <AddAddressDialog isOpenModal={this.state.isOpenAddModal} closeListener={this.onAddModalClosed.bind(this)} succeedListener={this.onTransactionSucceed.bind(this)} />
             </div>
         );
     }

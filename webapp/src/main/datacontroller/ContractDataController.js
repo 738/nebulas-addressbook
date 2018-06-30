@@ -14,11 +14,6 @@ class ContractDataController {
     }
 
     getAccount(callback = undefined) {
-        // console.log('AAA', window.webExtensionWallet);
-        if (!window.webExtensionWallet) {
-            alert('Install NasExtWallet!');
-            return;
-        }
         NasExtWallet.getUserAddress(addr => {
             this.userAddress = addr;
             console.log("user address is : " + this.userAddress);
@@ -100,6 +95,19 @@ class ContractDataController {
             .catch(err => {
                 console.log('ERROR1: ' + err);
             });
+    }
+
+    transfer(to, amount) {
+        this.nebPay.pay(to, amount, {
+            qrcode: {
+                showQRCode: false,
+            },
+            listener: this.cbSendTx,
+        });
+    }
+
+    cbSendTx(resp){
+        console.log("AAA callback resp: " + JSON.stringify(resp));
     }
 }
 
