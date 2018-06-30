@@ -50,6 +50,11 @@ class AddressItem extends React.Component {
         ContractDataController.sendTransaction('0', 'delete', args, undefined, this.props.succeedListener, undefined);
     }
 
+    onFavoriteChecked() {
+        var args = `[\"${this.props.item.address}\"]`;
+        ContractDataController.sendTransaction('0', 'addOrRemoveFavorite', args, undefined, this.props.succeedListener, undefined);
+    }
+
     render() {
         const styles = {
             card: {
@@ -76,12 +81,13 @@ class AddressItem extends React.Component {
                         />}
                         title={<div>
                             <span>{this.props.item.name}</span>
-                            <Checkbox
+                            {this.props.myself || <Checkbox
                                 checkedIcon={<ActionFavorite />}
                                 uncheckedIcon={<ActionFavoriteBorder />}
                                 style={styles.favoriteCheckBox}
                                 checked={this.props.item.isFavorite}
-                            />
+                                onCheck={this.onFavoriteChecked.bind(this)}
+                            />}
                         </div>}
                         subtitle={this.props.item.address}
                         titleStyle={{ fontSize: '20px', marginLeft: '10px' }}
