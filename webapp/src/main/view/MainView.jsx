@@ -41,13 +41,15 @@ class MainView extends React.Component {
     };
 
     fetchAddressItems() {
-        ContractDataController.callSmartContract("get", "", this.updateAddressItems.bind(this));
+        ContractDataController.getAccount(() => {
+            ContractDataController.callSmartContract("get", "", this.updateAddressItems.bind(this));
+        });
     }
 
     updateAddressItems(tx) {
         this.setState({
             ...this.state,
-            addressItems: JSON.parse(tx.result).addressItems,
+            addressItems: JSON.parse(tx.result) ? JSON.parse(tx.result).addressItems : [],
             // isLoading: false,
         });
     }
@@ -64,6 +66,10 @@ class MainView extends React.Component {
             ...this.state,
             isOpenAddModal: false
         });
+    }
+
+    onTransactionSucceed() {
+        this.fetchAddressItems();
     }
 
     render() {
@@ -87,15 +93,16 @@ class MainView extends React.Component {
                     value={this.state.searchInput}
                     onChange={this.onSearchInputChanged.bind(this)}
                 />
+                <AddressItem item={{address: ContractDataController.userAddress, name: "Myself"}} myself={true}></AddressItem>
                 {this.state.addressItems &&
                     this.state.addressItems
                         .filter(addressItem => addressItem.name.indexOf(this.state.searchInput) >= 0)
-                        .map((addressItem, index) => <AddressItem item={addressItem} key={index}></AddressItem>)
+                        .map((addressItem, index) => <AddressItem item={addressItem} key={index} succeedListener={this.onTransactionSucceed.bind(this)}></AddressItem>)
                 }
                 <FloatingActionButton style={styles.floatingActionButton} onClick={this.onAddModalOpen.bind(this)}>
                     <ContentAdd />
                 </FloatingActionButton>
-                <AddAddressDialog isOpenModal={this.state.isOpenAddModal} closeListener={this.onAddModalClosed.bind(this)} />
+                <AddAddressDialog isOpenModal={this.state.isOpenAddModal} closeListener={this.onAddModalClosed.bind(this)} succeedListener={this.onTransactionSucceed.bind(this)}/>
             </div>
         );
     }

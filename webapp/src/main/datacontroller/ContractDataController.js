@@ -1,15 +1,29 @@
 import Nebulas from 'nebulas';
-import { dappAddress, networkAddress, ownerAddress } from '../../config';
+import { dappAddress, networkAddress, ownerAddress} from '../../config';
 import NebPay from 'nebpay.js';
 
 class ContractDataController {
     constructor() {
         this.nebPay = new NebPay();
         this.neb = new Nebulas.Neb();
-        this.callbackUrl = NebPay.config.mainnetUrl;
+        this.callbackUrl = networkAddress === "https://mainnet.nebulas.io" ? NebPay.config.mainnetUrl : NebPay.config.testnetUrl;
         this.serialNumber = undefined;
         this.intervalId = undefined;
         this.intervalCount = 0;
+        this.userAddress = '';
+    }
+
+    getAccount(callback = undefined) {
+        // console.log('AAA', window.webExtensionWallet);
+        if (!window.webExtensionWallet) {
+            alert('Install NasExtWallet!');
+            return;
+        }
+        NasExtWallet.getUserAddress(addr => {
+            this.userAddress = addr;
+            console.log("user address is : " + this.userAddress);
+            callback && callback();
+        });
     }
 
     // 컨트랙트 호출
@@ -17,7 +31,7 @@ class ContractDataController {
         this.neb.setRequest(new Nebulas.HttpRequest(networkAddress));
         this.neb.api.call({
             chainID: 1,
-            from: ownerAddress,
+            from: this.userAddress,
             to: dappAddress,
             value: 0,
             gasPrice: 1000000,
@@ -36,9 +50,15 @@ class ContractDataController {
     sendTransaction(value, func, args, pendingCallbackListener = undefined, successCallbackListener = undefined, failCallbackListener = undefined) {
         this.serialNumber = this.nebPay.call(dappAddress, value, func, args, {
             callback: this.callbackUrl,
-            listener: () => { 
+            listener: () => {
                 pendingCallbackListener && pendingCallbackListener();
                 this._checkPayInfo(successCallbackListener, failCallbackListener);
+            },
+            qrcode: {
+                showQRCode: false,
+                container: undefined,
+                completeTip: undefined,
+                cancelTip: undefined,
             },
         });
     }
@@ -48,8 +68,8 @@ class ContractDataController {
         this.intervalId = setInterval(() => {
             this._queryPayInfo(successCallbackListener, failCallbackListener);
             this.intervalCount++;
-            // console.log(this.intervalId);
-            // console.log(this.intervalCount);
+            console.log(this.intervalId);
+            console.log(this.intervalCount);
             if (this.intervalCount > 6) {
                 clearInterval(this.intervalId);
                 this.intervalCount = 0;
@@ -62,6 +82,7 @@ class ContractDataController {
         this.nebPay.queryPayInfo(this.serialNumber, { callback: this.callbackUrl })
             .then(res => {
                 var status = JSON.parse(res).data.status;
+                console.log(res);
                 // tx: pending
                 if (status === 1 || status === 0) {
                     if (this.intervalId) clearInterval(this.intervalId);

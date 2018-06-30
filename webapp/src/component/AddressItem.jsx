@@ -2,13 +2,14 @@ import React from 'react';
 import QRious from 'qrious';
 import Blockies from 'react-blockies';
 import QRCodeDialog from './QRCodeDialog';
+import ContractDataController from '../main/datacontroller/ContractDataController';
 
 // material-ui
 import { Card, CardHeader, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border'; 
 
 class AddressItem extends React.Component {
 
@@ -42,6 +43,11 @@ class AddressItem extends React.Component {
             ...this.state,
             qrcode: qr.toDataURL(),
         });
+    }
+
+    onDeleteButtonClicked() {
+        var args = `[\"${this.props.item.address}\"]`;
+        ContractDataController.sendTransaction('0', 'delete', args, undefined, this.props.succeedListener, undefined);
     }
 
     render() {
@@ -83,10 +89,10 @@ class AddressItem extends React.Component {
                         showExpandableButton={false}
                     />
                     <CardActions>
-                        <RaisedButton style={styles.button} label="송금" backgroundColor="#00cec9" />
-                        <RaisedButton style={styles.button} label="QR코드" backgroundColor="#74b9ff" onClick={this.onQRCodeModalOpen.bind(this)} />
-                        <RaisedButton style={styles.button} label="편집" backgroundColor="#a29bfe" />
-                        <RaisedButton style={styles.button} label="삭제" backgroundColor="#fab1a0" />
+                        {this.props.myself || <RaisedButton style={styles.button} label="Send" backgroundColor="#00cec9" />}
+                        <RaisedButton style={styles.button} label="QR Code" backgroundColor="#74b9ff" onClick={this.onQRCodeModalOpen.bind(this)} />
+                        {this.props.myself || <RaisedButton label="Edit" style={styles.button} backgroundColor="#a29bfe" />}
+                        {this.props.myself || <RaisedButton label="Delete" style={styles.button} backgroundColor="#fab1a0" onClick={this.onDeleteButtonClicked.bind(this)} />}
                     </CardActions>
                 </Card>
                 <QRCodeDialog isOpenModal={this.state.isOpenQRCodeModal} closeListener={this.onQRCodeModalClosed.bind(this)} qrcode={this.state.qrcode} item={this.props.item} />

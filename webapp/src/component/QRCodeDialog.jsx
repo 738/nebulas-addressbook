@@ -12,14 +12,14 @@ class QRCodeDialog extends React.Component {
     render() {
         const actions = [
             <FlatButton
-                label="닫기"
+                label="Close"
                 secondary={true}
                 onClick={this.props.closeListener}
             />,
         ];
         return (
             <Dialog
-                title={`${this.props.item.name}님의 QR코드`}
+                title={`${this.props.item.name}'s QR Code`}
                 actions={actions}
                 modal={false}
                 open={this.props.isOpenModal}

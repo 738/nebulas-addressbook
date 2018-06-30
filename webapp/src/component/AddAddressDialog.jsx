@@ -23,7 +23,14 @@ class AddAddressDialog extends React.Component {
             return;
         }
         var args = `[\"${this.state.address}\", \"${this.state.name}\"]`;
-        ContractDataController.sendTransaction('0', 'save', args, undefined, undefined, undefined);
+        ContractDataController.sendTransaction('0', 'save', args, undefined, this.props.succeedListener, undefined);
+        this.setState({
+            ...this.state,
+            name: '',
+            address: '',
+        }, () => {
+            this.props.closeListener();
+        });
     }
 
     onNameChanged(e) {
