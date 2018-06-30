@@ -50,6 +50,10 @@ class AddressBookManager {
         var userAddress = Blockchain.transaction.from;
         var user = this.user.get(userAddress) || new User();
         user.userAddress = userAddress;
+        // address가 원래 있다면 중복 에러
+        for (let item of user.addressItems) {
+            if (item.address === address) throw new Error("Address is already existed");
+        }
         user.addressItems.push({address, name, isFavorite: false});
         this.user.set(userAddress, user);
         return user;
