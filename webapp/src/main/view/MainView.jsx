@@ -36,9 +36,6 @@ class MainView extends React.Component {
         this.setState({
             ...this.state,
             searchInput: value,
-            // autoComplete: [
-            //     ...this.state.addressItems.filter(addressItem => addressItem.name.toLowerCase().replace(/ /g, '').indexOf(this.state.searchInput.toLowerCase().replace(/ /g, '')) >= 0)
-            // ],
         });
     };
 
@@ -52,7 +49,6 @@ class MainView extends React.Component {
         this.setState({
             ...this.state,
             addressItems: JSON.parse(tx.result) ? JSON.parse(tx.result).addressItems : [],
-            // isLoading: false,
         });
     }
 

@@ -8,8 +8,6 @@ const footerStyle = {
     color: 'white',
     display: 'flex',
     justifyContent: 'center',
-    // padding: '10px',
-    // alignItems: 'center',
 }
 
 const Footer = () => (
