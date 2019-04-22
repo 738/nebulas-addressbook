@@ -9,7 +9,7 @@
 
 ## How to use
 
-1. Enter https://nasd.app
+1. Enter https://nas.holy.kiwi/address
 
 2. You can see your wallet address and add button.
 
